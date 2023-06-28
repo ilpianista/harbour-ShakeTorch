@@ -21,7 +21,7 @@ SOURCES += src/ShakeTorch.cpp \
 
 DISTFILES += rpm/harbour-shaketorch.changes \
     rpm/harbour-shaketorch.service \
-    rpm/ShakeTorch.spec
+    rpm/harbour-shaketorch.spec
 
 HEADERS += \
     src/accwatcher.h
