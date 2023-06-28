@@ -1,0 +1,9 @@
+[Unit]
+Description=ShakeTorch - Shake phone to turn on flashlight
+
+[Service]
+ExecStart=/usr/bin/harbour-shaketorch
+Restart=always
+
+[Install]
+WantedBy=default.target
