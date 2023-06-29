@@ -22,7 +22,6 @@
 #include <QObject>
 
 class QSensorGesture;
-class QDBusInterface;
 
 class AccWatcher : public QObject
 {
@@ -36,7 +35,6 @@ private Q_SLOTS:
 
 private:
     QSensorGesture *m_shake;
-    QDBusInterface *m_iface;
 };
 
 #endif // ACCWATCHER_H

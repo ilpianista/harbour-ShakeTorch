@@ -17,6 +17,7 @@
 */
 
 #include <QDebug>
+#include <QDBusReply>
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QSensorGestureManager>
@@ -29,32 +30,56 @@ static const QString FLASHLIGHT_INTERFACE(FLASHLIGHT_SERVICE);
 
 AccWatcher::AccWatcher(QObject *parent) :
     QObject(parent),
-    m_shake(0),
-    m_iface(0)
+    m_shake(0)
 {
-    m_iface = new QDBusInterface(FLASHLIGHT_SERVICE, FLASHLIGHT_PATH, FLASHLIGHT_INTERFACE, QDBusConnection::sessionBus(), this);
-
     QSensorGestureManager manager;
     if (manager.gestureIds().contains("QtSensors.shake")) {
         m_shake = new QSensorGesture(QStringList("QtSensors.shake"), this);
         m_shake->startDetection();
         connect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
+    } else {
+        qDebug() << "QtSensors.shake gesture is missing";
     }
 }
 
 AccWatcher::~AccWatcher()
 {
     delete m_shake;
-    delete m_iface;
 }
 
 void AccWatcher::accChanged()
 {
-    if (m_iface->isValid()) {
-        QDBusMessage reply = m_iface->call("toggleFlashlight");
+    qDebug() << "shaken!";
 
+    // Let's prevent the slot to be invoked twice until we've done
+    disconnect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
+
+    // Check wheather the service is already active or not
+    QDBusInterface dbus("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", QDBusConnection::sessionBus(), this);
+    if (!dbus.isValid()) {
+        qDebug() << "Unable to get dbus iface";
+    }
+
+    QDBusReply<bool> reply = dbus.call("NameHasOwner", FLASHLIGHT_SERVICE);
+    if (!reply.isValid()) {
+        qDebug() << "DBus NameHasOwner call failed with" << reply.error().name() << ":" << reply.error().message();
+    }
+
+    // Start the dbus service
+    if (!reply.value()) {
+        QDBusPendingCall call = dbus.asyncCall("StartServiceByName", FLASHLIGHT_SERVICE, uint(0));
+        call.waitForFinished();
+    }
+
+    QDBusInterface iface(FLASHLIGHT_SERVICE, FLASHLIGHT_PATH, FLASHLIGHT_INTERFACE, QDBusConnection::sessionBus(), this);
+    if (!iface.isValid()) {
+        qDebug() << "Unable to get flashlight iface";
+    } else {
+        QDBusMessage reply = iface.call("toggleFlashlight");
         if (reply.type() == QDBusMessage::ErrorMessage) {
-            qDebug() << reply.errorName() << reply.errorMessage();
+            qDebug() << "DBus toggleFlashlight failed with" << reply.errorName() << ":" << reply.errorMessage();
         }
     }
+
+    connect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
 }

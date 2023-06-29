@@ -1,5 +1,7 @@
 [Unit]
 Description=ShakeTorch - Shake phone to turn on flashlight
+Requires=dbus.service
+After=dbus.service
 
 [Service]
 ExecStart=/usr/bin/harbour-shaketorch

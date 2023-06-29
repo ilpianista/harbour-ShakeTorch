@@ -8,7 +8,8 @@ URL:        https://scarpino.dev
 Source0:    %{name}-%{version}.tar.bz2
 Source1:    harbour-shaketorch.service
 Requires:  qt5-qtsensors-plugin-gestures-shake
-BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5DBus)
+BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Sensors)
 
 %description
