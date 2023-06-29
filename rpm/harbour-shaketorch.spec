@@ -16,6 +16,19 @@ BuildRequires:  pkgconfig(Qt5Sensors)
 Daemon process which turns on the flashlight when the
 phone is shaken. It only works when the screen is turned on.
 
+%if "%{?vendor}" == "chum"
+PackageName: ShakeTorch
+Type: console-application
+DeveloperName: Andrea Scarpino
+Categories:
+ - Utility
+Custom:
+  Repo: https://github.com/ilpianista/harbour-ShakeTorch
+Url:
+  Homepage: https://github.com/ilpianista/harbour-ShakeTorch
+  Bugtracker: https://github.com/ilpianista/harbour-ShakeTorch/issues
+  Donation: https://liberapay.com/ilpianista
+%endif
 
 %prep
 %setup -q -n %{name}-%{version}
