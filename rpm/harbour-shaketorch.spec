@@ -1,7 +1,7 @@
 Name:       harbour-shaketorch
 
 Summary:    Shake phone to turn on flashlight
-Version:    0.1
+Version:    0.2
 Release:    1
 License:    MIT
 URL:        https://scarpino.dev
@@ -35,7 +35,7 @@ Url:
 
 %build
 
-%qmake5 
+%qmake5
 
 %make_build
 

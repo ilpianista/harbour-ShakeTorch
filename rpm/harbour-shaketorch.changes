@@ -1,3 +1,5 @@
+* Thu Jun 29 2023 Andrea Scarpino <andrea@scarpino.dev 0.2-1
+- Improve DBus connection to the flashlight
+
 * Wed Jun 28 2023 Andrea Scarpino <andrea@scarpino.dev 0.1-1
 - First release
-
