@@ -1,0 +1,17 @@
+{
+    "translation_catalog": "settings-shaketorch",
+    "entries": [
+        {
+            "path": "system_settings/look_and_feel/shaketorch",
+            "type": "page",
+            "title": "ShakeTorch",
+            "translation_id": "settings_shaketorch_entryname",
+            "order": 352,
+            "icon": "image://theme/icon-m-flashlight",
+            "params": {
+                "source": "/usr/share/jolla-settings/pages/shaketorch/mainpage.qml",
+                "privileged": "false"
+            }
+        }
+    ]
+}

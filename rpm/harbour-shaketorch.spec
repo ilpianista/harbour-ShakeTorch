@@ -51,6 +51,10 @@ install -m644 %{SOURCE1} %{buildroot}%{_userunitdir}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_userunitdir}/%{name}.service
+%{_datadir}/jolla-settings/entries/%{name}.json
+%dir %{_datadir}/jolla-settings/pages/%{name}
+%{_datadir}/jolla-settings/pages/%{name}/*.qml
+%{_datadir}/translations/*.qm
 
 
 %post

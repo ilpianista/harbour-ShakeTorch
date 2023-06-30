@@ -16,6 +16,8 @@ QT += sensors dbus
 
 CONFIG += qt
 
+SUBDIRS += jolla-settings
+
 SOURCES += src/ShakeTorch.cpp \
     src/accwatcher.cpp
 
