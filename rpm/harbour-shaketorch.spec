@@ -56,7 +56,7 @@ install -m644 %{SOURCE1} %{buildroot}%{_userunitdir}
 %{_datadir}/jolla-settings/entries/shaketorch.json
 %dir %{_datadir}/jolla-settings/pages/shaketorch
 %{_datadir}/jolla-settings/pages/shaketorch/*.qml
-%{_datadir}/translations/settings_shaketorch*.qm
+%{_datadir}/translations/settings-shaketorch*.qm
 
 
 %post
