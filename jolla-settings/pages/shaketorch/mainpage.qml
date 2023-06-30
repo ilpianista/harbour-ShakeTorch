@@ -32,9 +32,8 @@ Page {
         signalsEnabled: true
 
         function jobRemoved( id, job, unit, result ) {
-            if (unit === "harbour-shaketorch.service") {
-                console.debug("jobRemoved:", id, job, unit, result )
-                if (result == "done") page.refresh()
+            if ( (unit === "harbour-shaketorch.service") && (result == "done") ) {
+                page.refresh()
             }
         }
     }
