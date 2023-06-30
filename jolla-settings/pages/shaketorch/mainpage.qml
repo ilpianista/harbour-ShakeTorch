@@ -83,9 +83,9 @@ Page {
                     //% "Enable %1"
                     //: name of the start/stop switch
                     : qsTrId("settings_shaketorch_start").arg(qsTrId("settings_shaketorch_entryname"))
-                //% "%1 is %2"
-                //: description of the start/stop switch, %1 is its name, %2 is the service status
-                description: qsTrId("settings_shaketorch_servicestate").arg(qsTrId("settings_shaketorch_entryname")).arg(dbus.activeState)
+                //% "Turn on the flashlight when the device is shaken."
+                //: description of the start/stop switch
+                description: qsTrId("settings_shaketorch_startstop_desc")
                 onClicked: {
                     busy = true
                     if (!checked) {

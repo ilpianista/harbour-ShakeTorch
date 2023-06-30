@@ -18,9 +18,9 @@
         <extracomment>name of the start/stop switch</extracomment>
         <translation type="unfinished"></translation>
     </message>
-    <message id="settings_shaketorch_servicestate">
-        <source>%1 is %2</source>
-        <extracomment>description of the start/stop switch, %1 is its name, %2 is the service status</extracomment>
+    <message id="settings_shaketorch_startstop_desc">
+        <source>Turn on the flashlight when the device is shaken.</source>
+        <extracomment>description of the start/stop switch</extracomment>
         <translation type="unfinished"></translation>
     </message>
 </context>
