@@ -71,6 +71,9 @@ Page {
             TextSwitch {
                 id: onoffSwitch
 
+                width: parent.width - Theme.horizontalPageMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+
                 automaticCheck: false
                 checked: serviceActive
                 text: checked
