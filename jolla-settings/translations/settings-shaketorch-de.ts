@@ -6,22 +6,22 @@
     <message id="settings_shaketorch_entryname">
         <source>ShakeTorch</source>
         <extracomment>name in the Settings Page</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>SchüttelLicht</translation>
     </message>
     <message id="settings_shaketorch_stop">
         <source>Disable %1</source>
         <extracomment>name of the start/stop switch</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 ausschalten</translation>
     </message>
     <message id="settings_shaketorch_start">
         <source>Enable %1</source>
         <extracomment>name of the start/stop switch</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 einschalten</translation>
     </message>
-    <message id="settings_shaketorch_servicestate">
-        <source>%1 is %2</source>
-        <extracomment>description of the start/stop switch, %1 is its name, %2 is the service status</extracomment>
-        <translation type="unfinished"></translation>
+    <message id="settings_shaketorch_startstop_desc">
+        <source>Turn on the flashlight when the device is shaken.</source>
+        <extracomment>description of the start/stop switch</extracomment>
+        <translation>Schaltet die Lampe ein, wenn das Gerät geschüttelt wird.</translation>
     </message>
 </context>
 </TS>
