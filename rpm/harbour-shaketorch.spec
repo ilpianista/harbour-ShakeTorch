@@ -19,7 +19,7 @@ phone is shaken. It only works when the screen is turned on.
 
 %if "%{?vendor}" == "chum"
 PackageName: ShakeTorch
-Type: console-application
+Type: desktop-application
 DeveloperName: Andrea Scarpino
 Categories:
  - Utility
