@@ -12,6 +12,17 @@
                 "source": "/usr/share/jolla-settings/pages/shaketorch/mainpage.qml",
                 "privileged": "false"
             }
+        },
+        {
+            "path": "system_settings/look_and_feel/events/shaketorch",
+            "type": "custom",
+            "translation_id": "settings_shaketorch_eventname",
+            "icon": "image://theme/icon-m-flashlight",
+            "params": {
+                "source": "/usr/share/jolla-settings/pages/shaketorch/EnableSwitch.qml",
+                "type": "grid",
+                "privileged": "false"
+            }
         }
     ]
 }
