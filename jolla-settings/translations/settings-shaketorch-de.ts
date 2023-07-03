@@ -11,12 +11,12 @@
     <message id="settings_shaketorch_stop">
         <source>Disable %1</source>
         <extracomment>name of the start/stop switch</extracomment>
-        <translation>%1 ausschalten</translation>
+        <translation type="vanished">%1 ausschalten</translation>
     </message>
     <message id="settings_shaketorch_start">
         <source>Enable %1</source>
         <extracomment>name of the start/stop switch</extracomment>
-        <translation>%1 einschalten</translation>
+        <translation type="vanished">%1 einschalten</translation>
     </message>
     <message id="settings_shaketorch_startstop_desc">
         <source>Turn on the flashlight when the device is shaken.</source>

@@ -8,16 +8,6 @@
         <extracomment>name in the Settings Page</extracomment>
         <translation type="unfinished"></translation>
     </message>
-    <message id="settings_shaketorch_stop">
-        <source>Disable %1</source>
-        <extracomment>name of the start/stop switch</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message id="settings_shaketorch_start">
-        <source>Enable %1</source>
-        <extracomment>name of the start/stop switch</extracomment>
-        <translation type="unfinished"></translation>
-    </message>
     <message id="settings_shaketorch_startstop_desc">
         <source>Turn on the flashlight when the device is shaken.</source>
         <extracomment>description of the start/stop switch</extracomment>

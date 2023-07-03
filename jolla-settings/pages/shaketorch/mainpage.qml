@@ -76,16 +76,9 @@ Page {
 
                 automaticCheck: false
                 checked: serviceActive
-                text: checked
-                    //% "Disable %1"
-                    //: name of the start/stop switch
-                    ? qsTrId("settings_shaketorch_stop").arg(qsTrId("settings_shaketorch_entryname"))
-                    //% "Enable %1"
-                    //: name of the start/stop switch
-                    : qsTrId("settings_shaketorch_start").arg(qsTrId("settings_shaketorch_entryname"))
                 //% "Turn on the flashlight when the device is shaken."
                 //: description of the start/stop switch
-                description: qsTrId("settings_shaketorch_startstop_desc")
+                text: qsTrId("settings_shaketorch_startstop_desc")
                 onClicked: {
                     busy = true
                     if (!checked) {
