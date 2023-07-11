@@ -49,6 +49,12 @@ SettingsToggle {
             console.info("ShakeTorch: dis-engaged.")
             dbus.stopUnit()
         }
+        refreshtimer.restart()
+    }
+
+    Timer { id: refreshtimer
+        interval: 1000
+        onTriggered: dbus.updateProperties()
     }
 
     /*
