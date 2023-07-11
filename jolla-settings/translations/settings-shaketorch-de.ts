@@ -23,5 +23,11 @@
         <extracomment>description of the start/stop switch</extracomment>
         <translation>Schaltet die Lampe ein, wenn das Gerät geschüttelt wird.</translation>
     </message>
+    <message id="settings_shaketorch_enable_desc">
+        <source>Enable and start at Boot</source>
+        <oldsource>Enable at and start at Boot</oldsource>
+        <extracomment>description of the enable switch</extracomment>
+        <translation>Beim Booten aktivieren</translation>
+    </message>
 </context>
 </TS>

@@ -13,5 +13,11 @@
         <extracomment>description of the start/stop switch</extracomment>
         <translation type="unfinished"></translation>
     </message>
+    <message id="settings_shaketorch_enable_desc">
+        <source>Enable and start at Boot</source>
+        <oldsource>Enable at Boot</oldsource>
+        <extracomment>description of the enable switch</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

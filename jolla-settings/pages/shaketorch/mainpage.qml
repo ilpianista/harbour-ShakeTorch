@@ -11,13 +11,13 @@ Page {
     property string entryname: qsTrId("settings_shaketorch_entryname")
 
     // bind to Service
-    property bool serviceActive: (dbus.activeState == "active")
-    property bool serviceEnabled: (dbus.unitFileState == "enabled")
+    property bool serviceActive: (activeStr == "active")
+    property bool serviceEnabled: (enabledStr == "enabled")
+    property string activeStr
+    property string enabledStr
 
-    function refresh() {
-      onoffSwitch.checked = !onoffSwitch.checked
-      onoffSwitch.busy = false
-    }
+    onVisibleChanged: if (visible) dbus.updateProperties()
+    onStatusChanged: if (status != PageStatus.Inactive) dbus.updateProperties()
 
     /*
      * Dbus interface to systemd manager
@@ -31,10 +31,26 @@ Page {
 
         signalsEnabled: true
 
-        function jobRemoved( id, job, unit, result ) {
-            if ( (unit === "harbour-shaketorch.service") && (result == "done") ) {
-                page.refresh()
-            }
+        property string uname: "harbour-shaketorch.service"
+
+        function enable() {
+            typedCall('EnableUnitFiles', [
+                { "type": "as", "value": [uname] },
+                { "type": "b", "value": false },
+                { "type": "b", "value": true },
+            ],
+            function(result) { console.debug("Enabled", result); dbus.updateProperties()  },
+            function(result) { console.warn("Enable", result[1]) }
+            );
+        }
+        function disable() {
+            typedCall('DisableUnitFiles', [
+                { "type": "as", "value": [uname] },
+                { "type": "b", "value": false },
+            ],
+            function(result) { console.debug("Disabled", result); dbus.updateProperties() },
+            function(result) { console.warn("Disable", result) }
+            );
         }
     }
     /*
@@ -47,13 +63,13 @@ Page {
         path: "/org/freedesktop/systemd1/unit/harbour_2dshaketorch_2eservice"
         iface: "org.freedesktop.systemd1.Unit"
 
-        propertiesEnabled: true
         signalsEnabled: true
 
-        property string activeState
-        property string subState
-        property string unitFileState
-
+        onPropertiesChanged: updateProperties()
+        function updateProperties() {
+            page.activeStr  = dbus.getProperty("ActiveState");
+            page.enabledStr = dbus.getProperty("UnitFileState");
+        }
         function startUnit() { call("Start", "replace", undefined, undefined ) }
         function stopUnit()  { call("Stop",  "replace", undefined, undefined ) }
     }
@@ -68,6 +84,15 @@ Page {
 
             PageHeader { title: qsTrId("settings_shaketorch_entryname") }
 
+            Timer {
+                running: onoffSwitch.busy || enableSwitch.busy
+                interval: 4000
+                onTriggered: {
+                    dbus.updateProperties()
+                    onoffSwitch.busy = false
+                    enableSwitch.busy = false
+                }
+            }
             TextSwitch {
                 id: onoffSwitch
 
@@ -80,6 +105,7 @@ Page {
                 //: description of the start/stop switch
                 text: qsTrId("settings_shaketorch_startstop_desc")
                 onClicked: {
+                    if (busy) return
                     busy = true
                     if (!checked) {
                         console.info("ShakeTorch: engaged.")
@@ -87,6 +113,29 @@ Page {
                     } else {
                         console.info("ShakeTorch: dis-engaged.")
                         dbus.stopUnit()
+                    }
+                }
+            }
+            TextSwitch {
+                id: enableSwitch
+
+                width: parent.width - Theme.horizontalPageMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                automaticCheck: false
+                checked: serviceEnabled
+                //% "Enable and start at Boot"
+                //: description of the enable switch
+                text: qsTrId("settings_shaketorch_enable_desc")
+                onClicked: {
+                    if (busy) return
+                    busy = true
+                    if (!checked) {
+                        console.info("ShakeTorch: enabling.")
+                        manager.enable()
+                    } else {
+                        console.info("ShakeTorch: disabling.")
+                        manager.disable()
                     }
                 }
             }
