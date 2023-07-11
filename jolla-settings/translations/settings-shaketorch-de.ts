@@ -29,5 +29,10 @@
         <extracomment>description of the enable switch</extracomment>
         <translation>Beim Booten aktivieren</translation>
     </message>
+    <message id="settings_shaketorch_eventname">
+        <source>ShakeTorch</source>
+        <extracomment>button name in the top menu</extracomment>
+        <translation>SchüttelLicht</translation>
+    </message>
 </context>
 </TS>
