@@ -21,7 +21,8 @@
             "params": {
                 "source": "/usr/share/jolla-settings/pages/shaketorch/EnableSwitch.qml",
                 "type": "grid",
-                "privileged": "false"
+                "privileged": "false",
+                "settings_path": "system_settings/look_and_feel/shaketorch"
             }
         }
     ]

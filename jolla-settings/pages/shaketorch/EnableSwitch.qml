@@ -30,6 +30,10 @@ SettingsToggle {
     readonly property string buttonName: qsTrId("settings_shaketorch_eventname")
     name: buttonName
 
+    menu: ContextMenu {
+        SettingsMenuItem { onClicked: toggleSwitch.goToSettings() }
+    }
+
     onToggled: {
         if (!checked) {
             console.info("ShakeTorch: engaged.")
