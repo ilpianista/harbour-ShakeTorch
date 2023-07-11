@@ -12,8 +12,14 @@ SettingsToggle {
     checked: serviceActive
     available: serviceEnabled
 
-    property bool serviceActive: (dbus.activeState === "active")
-    property bool serviceEnabled: (dbus.unitFileState == "enabled")
+    // bind to Service
+    property bool serviceActive: (activeStr == "active")
+    property bool serviceEnabled: (enabledStr == "enabled")
+    property string activeStr
+    property string enabledStr
+
+    onVisibleChanged: if (visible) dbus.updateProperties()
+    Component.onCompleted: dbus.updateProperties()
 
     /*
     //% "Camera: front"
@@ -54,14 +60,15 @@ SettingsToggle {
         path: "/org/freedesktop/systemd1/unit/harbour_2dshaketorch_2eservice"
         iface: "org.freedesktop.systemd1.Unit"
 
-        propertiesEnabled: true
+        signalsEnabled: true
 
-        property string activeState
-        property string subState
-        property string unitFileState
+        onPropertiesChanged: updateProperties()
+        function updateProperties() {
+            toggleSwitch.activeStr  = dbus.getProperty("ActiveState");
+            toggleSwitch.enabledStr = dbus.getProperty("UnitFileState");
+        }
 
         function startUnit() { call("Start", "replace", undefined, undefined ) }
         function stopUnit()  { call("Stop",  "replace", undefined, undefined ) }
     }
-
 }
