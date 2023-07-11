@@ -22,10 +22,10 @@ SettingsToggle {
     Component.onCompleted: dbus.updateProperties()
 
     /*
-    //% "Camera: front"
+    //% "Shake: off"
     //: top menu button status text
     name: qsTrId("settings_shaketorch_status-off")
-    //% "Camera: triple"
+    //% "Shake: on"
     //: top menu button status text
     activeText: qsTrId("settings_shaketorch_status-on")
     */
@@ -35,6 +35,7 @@ SettingsToggle {
     //: button name in the top menu
     readonly property string buttonName: qsTrId("settings_shaketorch_eventname")
     name: buttonName
+    activeText: buttonName
 
     menu: ContextMenu {
         SettingsMenuItem { onClicked: toggleSwitch.goToSettings() }
