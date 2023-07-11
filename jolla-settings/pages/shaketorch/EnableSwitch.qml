@@ -10,13 +10,13 @@ SettingsToggle {
 
     active: checked
     checked: serviceActive
-    available: serviceEnabled
+    available: serviceLoaded
 
     // bind to Service
     property bool serviceActive: (activeStr == "active")
-    property bool serviceEnabled: (enabledStr == "enabled")
+    property bool serviceLoaded: (loadedStr == "loaded")
     property string activeStr
-    property string enabledStr
+    property string loadedStr
 
     onVisibleChanged: if (visible) dbus.updateProperties()
     Component.onCompleted: dbus.updateProperties()
@@ -65,7 +65,7 @@ SettingsToggle {
         onPropertiesChanged: updateProperties()
         function updateProperties() {
             toggleSwitch.activeStr  = dbus.getProperty("ActiveState");
-            toggleSwitch.enabledStr = dbus.getProperty("UnitFileState");
+            toggleSwitch.loadedStr = dbus.getProperty("LoadState");
         }
 
         function startUnit() { call("Start", "replace", undefined, undefined ) }
