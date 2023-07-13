@@ -11,6 +11,7 @@ Requires:  qt5-qtsensors-plugin-gestures-shake
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Sensors)
+BuildRequires:  qt5-qttools-linguist
 
 %description
 Daemon process which turns on the flashlight when the
@@ -18,7 +19,7 @@ phone is shaken. It only works when the screen is turned on.
 
 %if "%{?vendor}" == "chum"
 PackageName: ShakeTorch
-Type: console-application
+Type: desktop-application
 DeveloperName: Andrea Scarpino
 Categories:
  - Utility
@@ -51,6 +52,11 @@ install -m644 %{SOURCE1} %{buildroot}%{_userunitdir}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_userunitdir}/%{name}.service
+# Settings plugin:
+%{_datadir}/jolla-settings/entries/shaketorch.json
+%dir %{_datadir}/jolla-settings/pages/shaketorch
+%{_datadir}/jolla-settings/pages/shaketorch/*.qml
+%{_datadir}/translations/settings-shaketorch*.qm
 
 
 %post
