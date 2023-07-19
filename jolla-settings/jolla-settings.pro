@@ -4,7 +4,8 @@ settings-entry.path = /usr/share/jolla-settings/entries
 settings-entry.files = entries/shaketorch.json
 
 settings-ui.path = /usr/share/jolla-settings/pages/shaketorch
-settings-ui.files = pages/shaketorch/mainpage.qml
+settings-ui.files = pages/shaketorch/mainpage.qml\
+                    pages/shaketorch/EnableSwitch.qml
 
 INSTALLS += settings-ui settings-entry
 

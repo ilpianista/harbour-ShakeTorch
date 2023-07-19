@@ -19,5 +19,10 @@
         <extracomment>description of the enable switch</extracomment>
         <translation type="unfinished"></translation>
     </message>
+    <message id="settings_shaketorch_eventname">
+        <source>ShakeTorch</source>
+        <extracomment>button name in the top menu</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
