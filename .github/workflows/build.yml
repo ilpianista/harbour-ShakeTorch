@@ -10,12 +10,15 @@ on:
     branches:
       - master
 
+env:
+  RELEASE: 4.6.0.13
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
 
     - name: Prepare
       run: mkdir output
@@ -24,24 +27,24 @@ jobs:
       id: build_armv7hl
       uses: coderus/github-sfos-build@master
       with:
-        release: 4.4.0.58
+        release: ${{ env.RELEASE }}
 
     - name: Build i486
       id: build_i486
       uses: coderus/github-sfos-build@master
       with:
-        release: 4.4.0.58
+        release: ${{ env.RELEASE }}
         arch: i486
 
     - name: Build aarch64
       id: build_aarch64
       uses: coderus/github-sfos-build@master
       with:
-        release: 4.4.0.58
+        release: ${{ env.RELEASE }}
         arch: aarch64
 
     - name: Upload build result
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: rpms
         path: RPMS
