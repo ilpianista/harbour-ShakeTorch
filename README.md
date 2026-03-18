@@ -1,6 +1,6 @@
 # ShakeTorch
 
-Turns on the flashlight when [Sailfish OS](https://sailfishos.org) is shaken.
+Turns on the flashlight when [Sailfish OS](https://sailfishos.org) is shaken. Wake up your phone first!
 
 ## Install
 
