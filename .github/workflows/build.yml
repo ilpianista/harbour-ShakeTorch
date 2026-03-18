@@ -17,36 +17,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        arch: ['armv7hl', 'aarch64', 'i486']
+
     steps:
     - uses: actions/checkout@v5
 
-    - name: Prepare
-      run: mkdir output
-
-    - name: Build armv7hl
-      id: build_armv7hl
+    - name: Build ${{ matrix.arch }}
       uses: coderus/github-sfos-build@master
       with:
         release: ${{ env.RELEASE }}
-
-    - name: Build i486
-      id: build_i486
-      uses: coderus/github-sfos-build@master
-      with:
-        release: ${{ env.RELEASE }}
-        arch: i486
-
-    - name: Build aarch64
-      id: build_aarch64
-      uses: coderus/github-sfos-build@master
-      with:
-        release: ${{ env.RELEASE }}
-        arch: aarch64
+        arch: ${{ matrix.arch }}
 
     - name: Upload build result
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
-        name: rpms
+        name: rpms-${{ matrix.arch }}
         path: RPMS
 
     - name: Create release
