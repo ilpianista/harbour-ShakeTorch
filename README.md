@@ -4,7 +4,7 @@ Turns on the flashlight when [Sailfish OS](https://sailfishos.org) is shaken. Wa
 
 ## Install
 
-Install via [Chum](https://github.com/sailfishos-chum/main) or [OpenRepos](https://openrepos.net/content/ilpianista/shaketorch).
+Install via [Chum](https://github.com/sailfishos-chum/main).
 
 ## Translations
 

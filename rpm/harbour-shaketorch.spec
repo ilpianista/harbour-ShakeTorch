@@ -2,12 +2,12 @@ Name:       harbour-shaketorch
 
 Summary:    Shake phone to turn flashlight on
 Version:    0.3
-Release:    1
+Release:    2
 License:    MIT
 URL:        https://scarpino.dev
 Source0:    %{name}-%{version}.tar.bz2
 Source1:    harbour-shaketorch.service
-Requires:  qt5-qtsensors-plugin-gestures-shake
+Requires:   qt5-qtsensors-plugin-gestures-shake
 BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  pkgconfig(Qt5Sensors)
@@ -25,7 +25,11 @@ Categories:
  - Utility
 Custom:
   Repo: https://github.com/ilpianista/harbour-ShakeTorch
-Url:
+Icon: https://raw.githubusercontent.com/ilpianista/harbour-ShakeTorch/master/icons/harbour-hauk.png
+Screenshots:
+ - https://raw.githubusercontent.com/ilpianista/harbour-ShakeTorch/master/screenshots/screenshot_1.png
+ - https://raw.githubusercontent.com/ilpianista/harbour-ShakeTorch/master/screenshots/screenshot_2.png
+Links:
   Homepage: https://github.com/ilpianista/harbour-ShakeTorch
   Bugtracker: https://github.com/ilpianista/harbour-ShakeTorch/issues
   Donation: https://liberapay.com/ilpianista
