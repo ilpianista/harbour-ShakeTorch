@@ -49,16 +49,18 @@ AccWatcher::AccWatcher(QObject *parent) :
         m_shake->startDetection();
         connect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
         qInfo() << "Connected to shake gesture";
-    } else {
+    } else
         qCritical() << "QtSensors.shake gesture is missing";
-    }
 
-    QDBusConnection::sessionBus().connect(
+    if (QDBusConnection::sessionBus().connect(
                     FLASHLIGHT_SERVICE,
                     FLASHLIGHT_PATH,
                     FLASHLIGHT_INTERFACE,
-                    QStringLiteral("flashlightOnChanged"),
-                    this, SLOT(flashStateChanged()));
+                    QStringLiteral("flashlightOnChanged"), "b",
+                    this, SLOT(flashStateChanged(bool)))) {
+        qInfo() << "Connected to flashlight change signal";
+    } else
+        qCritical() << "Could not connect flashlight change signal";
 
     m_config = new MDConfGroup(QStringLiteral("/apps/%1/%2")
                     .arg(parent->property("organizationName").toString())
@@ -66,6 +68,7 @@ AccWatcher::AccWatcher(QObject *parent) :
                     );
 
     connect(m_config, SIGNAL(valuesChanged()), this, SLOT(updateSettings()));
+    connect(m_config, SIGNAL(valueChanged(const QString&)), this, SLOT(updateSetting(const QString&)));
     updateSettings();
 }
 
@@ -77,7 +80,7 @@ AccWatcher::~AccWatcher()
 
 void AccWatcher::flashStateChanged(bool on)
 {
-    qInfo() << "flashlight switched" << (on ? "on" : "off");
+    qInfo() << "flashlight changed to" << (on ? "on" : "off");
     if (m_isOn != on)
         m_isOn = on;
 }
@@ -112,6 +115,12 @@ void AccWatcher::accChanged()
     }
 
     connect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
+}
+
+void AccWatcher::updateSetting(const QString& key)
+{
+    Q_UNUSED(key);
+    updateSettings();
 }
 
 void AccWatcher::updateSettings()

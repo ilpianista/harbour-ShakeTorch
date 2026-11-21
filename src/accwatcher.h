@@ -37,6 +37,7 @@ private Q_SLOTS:
     void accChanged();
     void flashStateChanged(bool);
     void updateSettings();
+    void updateSetting(const QString& key);
 
 private:
     bool m_turnOn;
