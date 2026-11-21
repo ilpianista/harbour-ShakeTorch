@@ -20,7 +20,6 @@
 #include <QDBusReply>
 #include <QDBusConnection>
 #include <QDBusInterface>
-#include <QSettings>
 #include <QSensorGestureManager>
 
 #include "accwatcher.h"
@@ -31,13 +30,6 @@ static const QString FLASHLIGHT_INTERFACE(FLASHLIGHT_SERVICE);
 
 static const QString SETTING_TURN_ON("turnOnOnShake");
 static const QString SETTING_TURN_OFF("turnOffOnShake");
-
-static const QStringList valid_settings({
-                 SETTING_TURN_ON,
-                 SETTING_TURN_OFF
-             });
-
-class QCoreApplication;
 
 AccWatcher::AccWatcher(QObject *parent) :
     QObject(parent),
