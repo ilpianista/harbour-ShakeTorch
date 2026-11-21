@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QStringLiteral("harbour-shaketorch"));
     QCoreApplication::setOrganizationName(QStringLiteral("dev.scarpino"));
 
-    AccWatcher watcher;
+    AccWatcher watcher(&app);
 
     return app.exec();
 }

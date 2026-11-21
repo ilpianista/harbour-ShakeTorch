@@ -20,6 +20,7 @@
 #include <QDBusReply>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QSettings>
 #include <QSensorGestureManager>
 
 #include "accwatcher.h"
@@ -27,6 +28,16 @@
 static const QString FLASHLIGHT_SERVICE("com.jolla.settings.system.flashlight");
 static const QString FLASHLIGHT_PATH("/com/jolla/settings/system/flashlight");
 static const QString FLASHLIGHT_INTERFACE(FLASHLIGHT_SERVICE);
+
+static const QString SETTING_TURN_ON("turnOnOnShake");
+static const QString SETTING_TURN_OFF("turnOffOnShake");
+
+static const QStringList valid_settings({
+                 SETTING_TURN_ON,
+                 SETTING_TURN_OFF
+             });
+
+class QCoreApplication;
 
 AccWatcher::AccWatcher(QObject *parent) :
     QObject(parent),
@@ -37,14 +48,38 @@ AccWatcher::AccWatcher(QObject *parent) :
         m_shake = new QSensorGesture(QStringList("QtSensors.shake"), this);
         m_shake->startDetection();
         connect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
+        qInfo() << "Connected to shake gesture";
     } else {
-        qDebug() << "QtSensors.shake gesture is missing";
+        qCritical() << "QtSensors.shake gesture is missing";
     }
+
+    QDBusConnection::sessionBus().connect(
+                    FLASHLIGHT_SERVICE,
+                    FLASHLIGHT_PATH,
+                    FLASHLIGHT_INTERFACE,
+                    QStringLiteral("flashlightOnChanged"),
+                    this, SLOT(flashStateChanged()));
+
+    m_config = new MDConfGroup(QStringLiteral("/apps/%1/%2")
+                    .arg(parent->property("organizationName").toString())
+                    .arg(parent->property("applicationName").toString())
+                    );
+
+    connect(m_config, SIGNAL(valuesChanged()), this, SLOT(updateSettings()));
+    updateSettings();
 }
 
 AccWatcher::~AccWatcher()
 {
     delete m_shake;
+    delete m_config;
+}
+
+void AccWatcher::flashStateChanged(bool on)
+{
+    qInfo() << "flashlight switched" << (on ? "on" : "off");
+    if (m_isOn != on)
+        m_isOn = on;
 }
 
 void AccWatcher::accChanged()
@@ -57,7 +92,7 @@ void AccWatcher::accChanged()
     // Check wheather the service is already active or not
     QDBusInterface dbus("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", QDBusConnection::sessionBus(), this);
     if (!dbus.isValid()) {
-        qDebug() << "Unable to get dbus iface";
+        qCritical() << "Unable to get dbus iface";
     }
 
     QDBusReply<bool> reply = dbus.call("NameHasOwner", FLASHLIGHT_SERVICE);
@@ -71,15 +106,21 @@ void AccWatcher::accChanged()
         call.waitForFinished();
     }
 
-    QDBusInterface iface(FLASHLIGHT_SERVICE, FLASHLIGHT_PATH, FLASHLIGHT_INTERFACE, QDBusConnection::sessionBus(), this);
-    if (!iface.isValid()) {
-        qDebug() << "Unable to get flashlight iface";
-    } else {
-        QDBusMessage reply = iface.call("toggleFlashlight");
-        if (reply.type() == QDBusMessage::ErrorMessage) {
-            qDebug() << "DBus toggleFlashlight failed with" << reply.errorName() << ":" << reply.errorMessage();
-        }
+    QDBusInterface iface(FLASHLIGHT_SERVICE, FLASHLIGHT_PATH, FLASHLIGHT_INTERFACE);
+    if ( iface.isValid() && ((m_isOn && m_turnOff) || (!m_isOn && m_turnOn)) ) {
+        QDBusPendingCall call =  iface.asyncCall("toggleFlashlight");
     }
 
     connect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
+}
+
+void AccWatcher::updateSettings()
+{
+    if (m_config == nullptr) return;
+    m_turnOn  = m_config->value(SETTING_TURN_ON,  true).toBool();
+    m_turnOff = m_config->value(SETTING_TURN_OFF, true).toBool();
+    qInfo() << "Read Settings from:" << m_config->path()
+            << "\nTurn on on shake:" << m_turnOn
+            << "\nTurn off on shake:" << m_turnOff << "\n";
+
 }

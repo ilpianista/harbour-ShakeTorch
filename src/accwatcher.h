@@ -20,6 +20,7 @@
 #define ACCWATCHER_H
 
 #include <QObject>
+#include <mlite5/MDConfGroup>
 
 class QSensorGesture;
 
@@ -30,11 +31,20 @@ public:
     explicit AccWatcher(QObject *parent = 0);
     virtual ~AccWatcher();
 
+    void setConfig(const QVariantMap config);
+
 private Q_SLOTS:
     void accChanged();
+    void flashStateChanged(bool);
+    void updateSettings();
 
 private:
+    bool m_turnOn;
+    bool m_turnOff;
     QSensorGesture *m_shake;
+    MDConfGroup* m_config = nullptr;
+
+    bool m_isOn;
 };
 
 #endif // ACCWATCHER_H
