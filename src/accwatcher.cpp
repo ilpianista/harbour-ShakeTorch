@@ -24,8 +24,13 @@
 
 #include "accwatcher.h"
 
+#ifdef DBUS_IFACE_LEGACY
 static const QString FLASHLIGHT_SERVICE("com.jolla.settings.system.flashlight");
 static const QString FLASHLIGHT_PATH("/com/jolla/settings/system/flashlight");
+#else
+static const QString FLASHLIGHT_SERVICE("org.sailfish.flashlight.provider");
+static const QString FLASHLIGHT_PATH("/org/sailfish/flashlight/provider");
+#endif
 static const QString FLASHLIGHT_INTERFACE(FLASHLIGHT_SERVICE);
 
 AccWatcher::AccWatcher(QObject *parent) :
