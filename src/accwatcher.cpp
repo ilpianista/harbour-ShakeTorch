@@ -14,12 +14,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-#include <QDebug>
-#include <QDBusReply>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QDBusReply>
+#include <QDebug>
 #include <QSensorGestureManager>
 
 #include "accwatcher.h"
@@ -33,9 +33,9 @@ static const QString FLASHLIGHT_PATH("/org/sailfish/flashlight/provider");
 #endif
 static const QString FLASHLIGHT_INTERFACE(FLASHLIGHT_SERVICE);
 
-AccWatcher::AccWatcher(QObject *parent) :
-    QObject(parent),
-    m_shake(0)
+AccWatcher::AccWatcher(QObject *parent)
+    : QObject(parent)
+    , m_shake(0)
 {
     QSensorGestureManager manager;
     if (manager.gestureIds().contains("QtSensors.shake")) {
@@ -60,14 +60,19 @@ void AccWatcher::accChanged()
     disconnect(m_shake, SIGNAL(shake()), this, SLOT(accChanged()));
 
     // Check wheather the service is already active or not
-    QDBusInterface dbus("org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus", QDBusConnection::sessionBus(), this);
+    QDBusInterface dbus("org.freedesktop.DBus",
+                        "/org/freedesktop/DBus",
+                        "org.freedesktop.DBus",
+                        QDBusConnection::sessionBus(),
+                        this);
     if (!dbus.isValid()) {
         qDebug() << "Unable to get dbus iface";
     }
 
     QDBusReply<bool> reply = dbus.call("NameHasOwner", FLASHLIGHT_SERVICE);
     if (!reply.isValid()) {
-        qDebug() << "DBus NameHasOwner call failed with" << reply.error().name() << ":" << reply.error().message();
+        qDebug() << "DBus NameHasOwner call failed with" << reply.error().name() << ":"
+                 << reply.error().message();
     }
 
     // Start the dbus service
@@ -76,13 +81,18 @@ void AccWatcher::accChanged()
         call.waitForFinished();
     }
 
-    QDBusInterface iface(FLASHLIGHT_SERVICE, FLASHLIGHT_PATH, FLASHLIGHT_INTERFACE, QDBusConnection::sessionBus(), this);
+    QDBusInterface iface(FLASHLIGHT_SERVICE,
+                         FLASHLIGHT_PATH,
+                         FLASHLIGHT_INTERFACE,
+                         QDBusConnection::sessionBus(),
+                         this);
     if (!iface.isValid()) {
         qDebug() << "Unable to get flashlight iface";
     } else {
         QDBusMessage reply = iface.call("toggleFlashlight");
         if (reply.type() == QDBusMessage::ErrorMessage) {
-            qDebug() << "DBus toggleFlashlight failed with" << reply.errorName() << ":" << reply.errorMessage();
+            qDebug() << "DBus toggleFlashlight failed with" << reply.errorName() << ":"
+                     << reply.errorMessage();
         }
     }
 
