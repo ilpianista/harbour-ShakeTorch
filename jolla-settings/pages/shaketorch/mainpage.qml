@@ -22,6 +22,17 @@ Page {
         dbus.updateProperties()
 
     /*
+     * DConf path, must be the same in AccWatcher
+     */
+    ConfigurationGroup {
+        id: config
+        path: "/apps/dev.scarpino/harbour-shaketorch"
+        property bool turnOnOnShake: true
+        property bool turnOffOnShake: true
+
+    }
+
+    /*
      * Dbus interface to systemd manager
      */
     DBusInterface {
@@ -114,25 +125,40 @@ Page {
             }
 
             Timer {
-                running: onoffSwitch.busy || enableSwitch.busy
+                running: enableSwitch.busy || activeSwitch.busy
                 interval: 4000
                 onTriggered: {
                     dbus.updateProperties();
-                    onoffSwitch.busy = false;
                     enableSwitch.busy = false;
+                    activeSwitch.busy = false;
                 }
             }
+            Label{
+                width: parent.width - Theme.horizontalPageMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: Theme.highlightColor
+                //% "ShakeTorch can turn the flashlight on or off when the device is shaken."
+                text: qsTrId("settings_shaketorch_label")
+                font.pixelSize: Theme.fontSizeSmall
+                wrapMode: Text.Wrap
+            }
+
+            SectionHeader {
+                //% "Service"
+                text: qsTrId("settings_shaketorch_he_service")
+            }
+
             TextSwitch {
-                id: onoffSwitch
+                id: activeSwitch
 
                 width: parent.width - Theme.horizontalPageMargin
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 automaticCheck: false
                 checked: serviceActive
-                //% "Turn on the flashlight when the device is shaken."
-                //: description of the start/stop switch
-                text: qsTrId("settings_shaketorch_startstop_desc")
+                //% "Activate flashlight control"
+                //: description of the active switch
+                text: qsTrId("settings_shaketorch_active_desc")
                 onClicked: {
                     if (busy)
                         return;
@@ -146,6 +172,7 @@ Page {
                     }
                 }
             }
+
             TextSwitch {
                 id: enableSwitch
 
@@ -154,7 +181,7 @@ Page {
 
                 automaticCheck: false
                 checked: serviceEnabled
-                //% "Enable and start at Boot"
+                //% "Start at Boot"
                 //: description of the enable switch
                 text: qsTrId("settings_shaketorch_enable_desc")
                 onClicked: {
@@ -169,6 +196,49 @@ Page {
                         manager.disable();
                     }
                 }
+            }
+
+
+            SectionHeader {
+                //% "Options"
+                text: qsTrId("settings_shaketorch_he_options")
+            }
+
+            Label{
+                width: parent.width - Theme.horizontalPageMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: Theme.highlightColor
+                //% "When shaking is detected:"
+                text: qsTrId("settings_shaketorch_option_label")
+                font.pixelSize: Theme.fontSizeSmall
+                wrapMode: Text.Wrap
+            }
+
+
+            TextSwitch {
+                id: onSwitch
+
+                width: parent.width - Theme.horizontalPageMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                checked: config.turnOnOnShake
+                //% "Turn the flashlight on"
+                //: description of the start switch
+                text: qsTrId("settings_shaketorch_start_desc")
+                onClicked: config.turnOnOnShake = checked
+            }
+
+            TextSwitch {
+                id: offSwitch
+
+                width: parent.width - Theme.horizontalPageMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                checked: config.turnOffOnShake
+                //% "Turn the flashlight off"
+                //: description of the stop switch
+                text: qsTrId("settings_shaketorch_stop_desc")
+                onClicked: config.turnOffOnShake = checked
             }
         }
     }
