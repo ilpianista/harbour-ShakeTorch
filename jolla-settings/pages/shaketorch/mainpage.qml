@@ -138,7 +138,7 @@ Page {
                         dbus.startUnit()
                     } else {
                         console.info("ShakeTorch: dis-engaged.")
-                        dbus.stop()
+                        dbus.stopUnit()
                     }
                 }
             }
