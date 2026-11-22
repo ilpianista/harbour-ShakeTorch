@@ -16,8 +16,10 @@ Page {
     property string activeStr
     property string enabledStr
 
-    onVisibleChanged: if (visible) dbus.updateProperties()
-    onStatusChanged: if (status != PageStatus.Inactive) dbus.updateProperties()
+    onVisibleChanged: if (visible)
+        dbus.updateProperties()
+    onStatusChanged: if (status != PageStatus.Inactive)
+        dbus.updateProperties()
 
     /*
      * DConf path, must be the same in AccWatcher
@@ -46,22 +48,41 @@ Page {
 
         function enable() {
             typedCall('EnableUnitFiles', [
-                { "type": "as", "value": [uname] },
-                { "type": "b", "value": false },
-                { "type": "b", "value": true },
-            ],
-            function(result) { console.debug("Enabled", result); dbus.updateProperties()  },
-            function(result) { console.warn("Enable", result[1]) }
-            );
+                {
+                    "type": "as",
+                    "value": [uname]
+                },
+                {
+                    "type": "b",
+                    "value": false
+                },
+                {
+                    "type": "b",
+                    "value": true
+                },
+            ], function (result) {
+                console.debug("Enabled", result);
+                dbus.updateProperties();
+            }, function (result) {
+                console.warn("Enable", result[1]);
+            });
         }
         function disable() {
             typedCall('DisableUnitFiles', [
-                { "type": "as", "value": [uname] },
-                { "type": "b", "value": false },
-            ],
-            function(result) { console.debug("Disabled", result); dbus.updateProperties() },
-            function(result) { console.warn("Disable", result) }
-            );
+                {
+                    "type": "as",
+                    "value": [uname]
+                },
+                {
+                    "type": "b",
+                    "value": false
+                },
+            ], function (result) {
+                console.debug("Disabled", result);
+                dbus.updateProperties();
+            }, function (result) {
+                console.warn("Disable", result);
+            });
         }
     }
     /*
@@ -78,30 +99,38 @@ Page {
 
         onPropertiesChanged: updateProperties()
         function updateProperties() {
-            page.activeStr  = dbus.getProperty("ActiveState");
+            page.activeStr = dbus.getProperty("ActiveState");
             page.enabledStr = dbus.getProperty("UnitFileState");
         }
-        function startUnit() { call("Start", "replace", undefined, undefined ) }
-        function stopUnit()  { call("Stop",  "replace", undefined, undefined ) }
+        function startUnit() {
+            call("Start", "replace", undefined, undefined);
+        }
+        function stopUnit() {
+            call("Stop", "replace", undefined, undefined);
+        }
     }
 
-    SilicaFlickable { id: flick
+    SilicaFlickable {
+        id: flick
         anchors.fill: parent
         contentHeight: column.height
 
-        Column { id: column
+        Column {
+            id: column
             width: page.width
             spacing: Theme.paddingMedium
 
-            PageHeader { title: qsTrId("settings_shaketorch_entryname") }
+            PageHeader {
+                title: qsTrId("settings_shaketorch_entryname")
+            }
 
             Timer {
                 running: enableSwitch.busy || activeSwitch.busy
                 interval: 4000
                 onTriggered: {
-                    dbus.updateProperties()
-                    enableSwitch.busy = false
-                    activeSwitch.busy = false
+                    dbus.updateProperties();
+                    enableSwitch.busy = false;
+                    activeSwitch.busy = false;
                 }
             }
             Label{
@@ -131,14 +160,15 @@ Page {
                 //: description of the active switch
                 text: qsTrId("settings_shaketorch_active_desc")
                 onClicked: {
-                    if (busy) return
-                    busy = true
+                    if (busy)
+                        return;
+                    busy = true;
                     if (!checked) {
-                        console.info("ShakeTorch: engaged.")
-                        dbus.startUnit()
+                        console.info("ShakeTorch: engaged.");
+                        dbus.startUnit();
                     } else {
-                        console.info("ShakeTorch: dis-engaged.")
-                        dbus.stopUnit()
+                        console.info("ShakeTorch: dis-engaged.");
+                        dbus.stopUnit();
                     }
                 }
             }
@@ -155,14 +185,15 @@ Page {
                 //: description of the enable switch
                 text: qsTrId("settings_shaketorch_enable_desc")
                 onClicked: {
-                    if (busy) return
-                    busy = true
+                    if (busy)
+                        return;
+                    busy = true;
                     if (!checked) {
-                        console.info("ShakeTorch: enabling.")
-                        manager.enable()
+                        console.info("ShakeTorch: enabling.");
+                        manager.enable();
                     } else {
-                        console.info("ShakeTorch: disabling.")
-                        manager.disable()
+                        console.info("ShakeTorch: disabling.");
+                        manager.disable();
                     }
                 }
             }

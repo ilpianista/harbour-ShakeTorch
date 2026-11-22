@@ -18,7 +18,8 @@ SettingsToggle {
     property string activeStr
     property string loadedStr
 
-    onVisibleChanged: if (visible) dbus.updateProperties()
+    onVisibleChanged: if (visible)
+        dbus.updateProperties()
     Component.onCompleted: dbus.updateProperties()
 
     /*
@@ -38,21 +39,24 @@ SettingsToggle {
     activeText: buttonName
 
     menu: ContextMenu {
-        SettingsMenuItem { onClicked: toggleSwitch.goToSettings() }
+        SettingsMenuItem {
+            onClicked: toggleSwitch.goToSettings()
+        }
     }
 
     onToggled: {
         if (!checked) {
-            console.info("ShakeTorch: engaged.")
-            dbus.startUnit()
+            console.info("ShakeTorch: engaged.");
+            dbus.startUnit();
         } else {
-            console.info("ShakeTorch: dis-engaged.")
-            dbus.stopUnit()
+            console.info("ShakeTorch: dis-engaged.");
+            dbus.stopUnit();
         }
-        refreshtimer.restart()
+        refreshtimer.restart();
     }
 
-    Timer { id: refreshtimer
+    Timer {
+        id: refreshtimer
         interval: 1000
         onTriggered: dbus.updateProperties()
     }
@@ -71,11 +75,15 @@ SettingsToggle {
 
         onPropertiesChanged: updateProperties()
         function updateProperties() {
-            toggleSwitch.activeStr  = dbus.getProperty("ActiveState");
+            toggleSwitch.activeStr = dbus.getProperty("ActiveState");
             toggleSwitch.loadedStr = dbus.getProperty("LoadState");
         }
 
-        function startUnit() { call("Start", "replace", undefined, undefined ) }
-        function stopUnit()  { call("Stop",  "replace", undefined, undefined ) }
+        function startUnit() {
+            call("Start", "replace", undefined, undefined);
+        }
+        function stopUnit() {
+            call("Stop", "replace", undefined, undefined);
+        }
     }
 }
